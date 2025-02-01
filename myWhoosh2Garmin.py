@@ -372,7 +372,7 @@ def get_most_recent_fit_file(fitfile_location: Path) -> Path:
     Returns the most recent .fit file based 
     on versioning in the filename.
     """
-    fit_files = fitfile_location.glob("MyNewActivity-*.fit")
+    fit_files = fitfile_location.glob("*.fit")
     fit_files = sorted(fit_files, key=lambda f: 
                        tuple(map(int, re.findall(r'(\d+)',
                                                  f.stem.split('-')[-1]))),
@@ -452,7 +452,7 @@ def upload_fit_file_to_garmin(new_file_path: Path):
         logger.info("Duplicate activity found on Garmin Connect.")
 
 
-def main():
+def main(file_location: Path):
     """
     Main function to authenticate to Garmin, clean and save the FIT file, 
     and upload it to Garmin.
@@ -461,10 +461,16 @@ def main():
         None
     """
     authenticate_to_garmin()
-    new_file_path = cleanup_and_save_fit_file(FITFILE_LOCATION)
+    new_file_path = cleanup_and_save_fit_file(file_location)
     if new_file_path:
         upload_fit_file_to_garmin(new_file_path)
 
 
 if __name__ == "__main__":
-    main()
+  import argparse
+
+    parser = argparse.ArgumentParser(description='Upload my whoosh to Garmin')
+    parser.add_argument('--fit-file-location', metavar='path', required=True,
+                        help='the path to the fit file')
+    args = parser.parse_args()
+    main(file_location=args.fileLocation)
