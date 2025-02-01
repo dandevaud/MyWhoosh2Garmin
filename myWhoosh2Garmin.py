@@ -361,6 +361,8 @@ def cleanup_fit_file(fit_file_path: Path, new_file_path: Path) -> None:
                 message.avg_power = calculate_avg(power_values)
             if not message.avg_heart_rate:
                 message.avg_heart_rate = calculate_avg(heart_rate_values)
+            if not message.avg_speed:
+                message.avg_Speed = message.total_distance / message.total_timer_time
             cadence_values, power_values, heart_rate_values = reset_values()
         builder.add(message)
     builder.build().to_file(str(new_file_path))
