@@ -460,11 +460,10 @@ def main(file_location: Path):
     """
     logger.info("Starting MyWhoosh2Garmin...")
     logger.info(f"FIT file location: {file_location}")
-    # authenticate_to_garmin()
+    authenticate_to_garmin()
     new_file_path = cleanup_and_save_fit_file(Path(file_location))
-    return new_file_path
-    # if new_file_path:
-       # upload_fit_file_to_garmin(new_file_path)
+    if new_file_path:
+        upload_fit_file_to_garmin(new_file_path)
 
 
 if __name__ == "__main__":
